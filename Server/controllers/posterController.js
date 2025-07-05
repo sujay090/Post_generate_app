@@ -48,7 +48,9 @@ export const uploadPoster = async (req, res) => {
               .replace(/</g, "&lt;")
               .replace(/>/g, "&gt;");
 
-            return `<text x="${ph.x}" y="${ph.y}" font-family="${fontFamily}" font-size="${fontSize}" fill="${color}" font-weight="${fontWeight}">${text}</text>`;
+            return `<text x="${ph.x}" y="${
+              ph.y
+            }" font-family="${fontFamily}" font-size="${fontSize}" fill="${color}" font-weight="${fontWeight}">${""}</text>`;
           })
           .join("")}
       </svg>
@@ -128,7 +130,18 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
 
         const imageMeta = await sharp(poster.originalImagePath).metadata();
 
-        // Build SVG overlay, replacing placeholders with customer data
+        // Dynamic placeholder replacement mapping
+        const placeholderMap = {
+          "{companyname}": customer.companyName || "",
+          "{whatsapp}": customer.whatsapp || "",
+          "{website}": customer.website || "",
+          "{logourl}": customer.logoUrl || "",
+          "{name}": customer.name || "",
+          "{email}": customer.email || "",
+          "{phone}": customer.phone || "",
+        };
+
+        // Build SVG overlay
         const svgOverlay = `
           <svg width="${imageMeta.width}" height="${
           imageMeta.height
@@ -136,28 +149,25 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
             ${poster.placeholders
               .map((ph) => {
                 let text = ph.text || "";
-
-                // Replace known placeholders with customer fields (case-insensitive)
+                console.log(ph)
+                // 👇 Normalize and replace placeholder
                 const lowerText = text.toLowerCase();
-
-                if (lowerText === "{companyname}")
-                  text = customer.companyName || "";
-                else if (lowerText === "{whatsapp}")
-                  text = customer.whatsapp || "";
+                if (placeholderMap[lowerText]) {
+                  text = placeholderMap[lowerText];
+                }
 
                 const style = ph.style || {};
                 const fontFamily = style.fontFamily || "Arial";
                 const fontSize = parseInt(style.fontSize) || 24;
                 const color = style.color || "#000000";
                 const fontWeight = style.fontWeight || "normal";
-
-                // Escape text for SVG
+                const fontStyle = style.fontStyle || "normal";
+                console.log(style)
                 const safeText = String(text)
                   .replace(/&/g, "&amp;")
                   .replace(/</g, "&lt;")
                   .replace(/>/g, "&gt;");
-
-                return `<text x="${ph.x}" y="${ph.y}" font-family="${fontFamily}" font-size="${fontSize}" fill="${color}" font-weight="${fontWeight}">${safeText}</text>`;
+                return `<text x="${ph.x}" y="${ph.y}" font-family="${fontFamily}" font-size="${fontSize}" fill="${color}" font-weight="${fontWeight}" font-style="${fontStyle}">${safeText}</text>`;
               })
               .join("")}
           </svg>
@@ -166,21 +176,19 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
         const fileName = `${customer._id}_${Date.now()}_${poster._id}.png`;
         const outputPath = path.join(outputFolder, fileName);
 
-        // Composite original image with replaced SVG text
+        // 📸 Composite image
         await sharp(poster.originalImagePath)
           .composite([{ input: Buffer.from(svgOverlay), top: 0, left: 0 }])
           .png()
           .toFile(outputPath);
 
-        // Save generated poster info in DB
+        // 💾 Save in DB
         const saved = await GeneratedPoster.create({
           customer: customer._id,
           category,
           originalPosterId: poster._id,
           generatedImagePath: `uploads/generated/${fileName}`,
         });
-
-          // imageUrl: `https://poster-generetorapp-backend.onrender.com/uploads/generated/${fileName}`,
 
         generatedPosters.push({
           _id: saved._id,

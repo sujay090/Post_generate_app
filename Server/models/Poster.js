@@ -9,6 +9,7 @@ const placeholderSchema = new mongoose.Schema({
     fontSize: String,
     color: String,
     fontWeight: String,
+    fontStyle:String
   },
 });
 

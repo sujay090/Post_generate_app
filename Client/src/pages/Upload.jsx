@@ -1,22 +1,22 @@
-// Upload.jsx
-import React, { useRef, useState, useEffect } from 'react';
-import { Rnd } from 'react-rnd';
-import { toast } from 'react-toastify';
-import { posterAPI } from '../services/api';
+import React, { useRef, useState, useEffect } from "react";
+import { Rnd } from "react-rnd";
+import { toast } from "react-toastify";
+import { posterAPI } from "../services/api";
 
 const defaultStyle = {
   fontSize: 20,
-  fontFamily: 'Arial',
-  color: '#000000',
+  fontFamily: "Arial",
+  color: "#000000",
   bold: false,
   italic: false,
 };
 
 const Upload = () => {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [posterFile, setPosterFile] = useState(null);
-  const [posterSrc, setPosterSrc] = useState('');
+  const [posterSrc, setPosterSrc] = useState("");
   const [imgSize, setImgSize] = useState({ width: 400, height: 560 });
+  const [originalSize, setOriginalSize] = useState({ width: 0, height: 0 }); // ✅ Track real image size
   const [loading, setLoading] = useState(false);
 
   const [elements, setElements] = useState({
@@ -25,7 +25,7 @@ const Upload = () => {
       y: 60,
       width: 200,
       height: 50,
-      text: '',
+      text: "",
       style: { ...defaultStyle },
     },
     whatsapp: {
@@ -33,7 +33,7 @@ const Upload = () => {
       y: 140,
       width: 200,
       height: 50,
-      text: '',
+      text: "",
       style: { ...defaultStyle },
     },
     website: {
@@ -41,7 +41,7 @@ const Upload = () => {
       y: 220,
       width: 200,
       height: 50,
-      text: '',
+      text: "",
       style: { ...defaultStyle },
     },
   });
@@ -51,13 +51,13 @@ const Upload = () => {
 
   const handlePosterChange = (e) => {
     if (!category) {
-      toast.error('Please select a category first!');
-      e.target.value = '';
+      toast.error("Please select a category first!");
+      e.target.value = "";
       return;
     }
 
     const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       setPosterFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -67,15 +67,17 @@ const Upload = () => {
           const ratio = img.width / img.height;
           const width = maxWidth;
           const height = maxWidth / ratio;
+
           setImgSize({ width, height });
+          setOriginalSize({ width: img.width, height: img.height }); // ✅ Set original image size
           setPosterSrc(event.target.result);
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     } else {
-      toast.error('Please select a valid image!');
-      e.target.value = '';
+      toast.error("Please select a valid image!");
+      e.target.value = "";
     }
   };
 
@@ -84,7 +86,7 @@ const Upload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const image = new Image();
     image.src = posterSrc;
 
@@ -95,12 +97,14 @@ const Upload = () => {
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
       Object.entries(elements).forEach(([key, val]) => {
-        if (val.text.trim() !== '') {
+        if (val.text.trim() !== "") {
           const { fontSize, fontFamily, color, bold, italic } = val.style;
-          const fontStyle = `${italic ? 'italic ' : ''}${bold ? 'bold ' : ''}${fontSize}px ${fontFamily}`;
+          const fontStyle = `${italic ? "italic " : ""}${
+            bold ? "bold " : ""
+          }${fontSize}px ${fontFamily}`;
           ctx.font = fontStyle;
           ctx.fillStyle = color;
-          ctx.textBaseline = 'top';
+          ctx.textBaseline = "top";
           ctx.fillText(val.text, val.x + 5, val.y + 5);
         }
       });
@@ -109,9 +113,10 @@ const Upload = () => {
 
   const handleStyleChange = (key, prop, value) => {
     let newValue = value;
-    if (prop === 'fontSize') {
+    if (prop === "fontSize") {
       const parsed = parseInt(value, 10);
-      newValue = Number.isNaN(parsed) || parsed <= 0 ? defaultStyle.fontSize : parsed;
+      newValue =
+        Number.isNaN(parsed) || parsed <= 0 ? defaultStyle.fontSize : parsed;
     }
     setElements((prev) => ({
       ...prev,
@@ -150,46 +155,56 @@ const Upload = () => {
     e.preventDefault();
 
     if (!posterSrc || !category) {
-      return toast.error('Please upload an image and select category!');
+      return toast.error("Please upload an image and select category!");
     }
 
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('posters', posterFile);
-      formData.append('category', category);
+      formData.append("posters", posterFile);
+      formData.append("category", category);
+
+      // ✅ Handle scale based on original vs preview
+      const xRatio =
+        originalSize.width && imgSize.width
+          ? originalSize.width / imgSize.width
+          : 1;
+      const yRatio =
+        originalSize.height && imgSize.height
+          ? originalSize.height / imgSize.height
+          : 1;
 
       const placeholders = Object.entries(elements).map(([key, val]) => ({
-        key,
-        x: val.x,
-        y: val.y,
-        width: val.width,
-        height: val.height,
-        text: val.text, // This will be populated with customer data later
+        x: Math.round(val.x * xRatio),
+        y: Math.round(val.y * yRatio),
+        width: Math.round(val.width * xRatio),
+        height: Math.round(val.height * yRatio),
+        text: `{${key.toLowerCase()}}`,
         style: {
           fontSize: `${val.style.fontSize}px`,
-          fontWeight: val.style.bold ? 'bold' : 'normal',
+          fontWeight: val.style.bold ? "bold" : "normal",
+          fontStyle: val.style.italic ? "italic" : "normal", // ✅ Include this
           color: val.style.color,
           fontFamily: val.style.fontFamily,
         },
-        textAlign: 'left'
+        textAlign: "left",
       }));
-      console.log(placeholders)
-      formData.append('placeholders', JSON.stringify(placeholders));
+
+      formData.append("placeholders", JSON.stringify(placeholders));
 
       await posterAPI.uploadPoster(formData);
 
-      toast.success('Poster uploaded successfully!');
-      setCategory('');
+      toast.success("Poster uploaded successfully!");
+      setCategory("");
       setPosterFile(null);
-      setPosterSrc('');
+      setPosterSrc("");
       setElements({
         companyName: {
           x: 40,
           y: 60,
           width: 200,
           height: 50,
-          text: '',
+          text: "",
           style: { ...defaultStyle },
         },
         whatsapp: {
@@ -197,7 +212,7 @@ const Upload = () => {
           y: 140,
           width: 200,
           height: 50,
-          text: '',
+          text: "",
           style: { ...defaultStyle },
         },
         website: {
@@ -205,13 +220,13 @@ const Upload = () => {
           y: 220,
           width: 200,
           height: 50,
-          text: '',
+          text: "",
           style: { ...defaultStyle },
         },
       });
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
-      toast.error('Upload failed!');
+      toast.error("Upload failed!");
       console.error(error);
     } finally {
       setLoading(false);
@@ -221,12 +236,16 @@ const Upload = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
       <div className="w-full max-w-7xl bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">Upload Poster</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">
+          Upload Poster
+        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* Category */}
           <div className="mb-4">
-            <label className="block font-medium text-gray-700 mb-1">Select Category</label>
+            <label className="block font-medium text-gray-700 mb-1">
+              Select Category
+            </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -242,7 +261,9 @@ const Upload = () => {
 
           {/* Upload Poster */}
           <div className="mb-6">
-            <label className="block font-medium text-gray-700 mb-1">Upload Poster</label>
+            <label className="block font-medium text-gray-700 mb-1">
+              Upload Poster
+            </label>
             <input
               type="file"
               accept="image/*"
@@ -253,7 +274,7 @@ const Upload = () => {
             />
           </div>
 
-          {/* Preview Area */}
+          {/* Preview */}
           {posterSrc && (
             <div
               className="relative border border-gray-300 rounded-md mx-auto mb-8"
@@ -265,8 +286,6 @@ const Upload = () => {
                 className="w-full h-full object-contain"
                 draggable={false}
               />
-
-              {/* Draggable text overlays */}
               {Object.entries(elements).map(([key, val]) => (
                 <Rnd
                   key={key}
@@ -281,13 +300,13 @@ const Upload = () => {
                     placeholder={key}
                     value={val.text}
                     onChange={(e) => handleTextChange(key, e.target.value)}
-                    className="text-input w-full h-full px-1 border border-dotted border-gray-400 focus:outline-none bg-transparent"
+                    className="w-full h-full px-1 border border-dotted border-gray-400 bg-transparent focus:outline-none"
                     style={{
                       fontSize: val.style.fontSize,
                       fontFamily: val.style.fontFamily,
                       color: val.style.color,
-                      fontWeight: val.style.bold ? 'bold' : 'normal',
-                      fontStyle: val.style.italic ? 'italic' : 'normal',
+                      fontWeight: val.style.bold ? "bold" : "normal",
+                      fontStyle: val.style.italic ? "italic" : "normal",
                     }}
                   />
                 </Rnd>
@@ -299,7 +318,9 @@ const Upload = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {Object.entries(elements).map(([key, val]) => (
               <div key={key} className="border rounded-md p-4 bg-gray-50">
-                <h4 className="font-semibold mb-2 capitalize text-gray-700">{key.replace(/([A-Z])/g, ' $1')}</h4>
+                <h4 className="font-semibold mb-2 capitalize text-gray-700">
+                  {key.replace(/([A-Z])/g, " $1")}
+                </h4>
                 <label className="block text-sm font-medium mb-1">Text</label>
                 <input
                   type="text"
@@ -307,20 +328,28 @@ const Upload = () => {
                   onChange={(e) => handleTextChange(key, e.target.value)}
                   className="w-full px-2 py-1 border border-gray-300 rounded"
                 />
-                <label className="block mt-2 text-sm font-medium mb-1">Font Size</label>
+                <label className="block mt-2 text-sm font-medium mb-1">
+                  Font Size
+                </label>
                 <input
                   type="number"
                   min={10}
                   max={100}
                   value={val.style.fontSize}
-                  onChange={(e) => handleStyleChange(key, 'fontSize', e.target.value)}
+                  onChange={(e) =>
+                    handleStyleChange(key, "fontSize", e.target.value)
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded"
                 />
-                <label className="block mt-2 text-sm font-medium mb-1">Color</label>
+                <label className="block mt-2 text-sm font-medium mb-1">
+                  Color
+                </label>
                 <input
                   type="color"
                   value={val.style.color}
-                  onChange={(e) => handleStyleChange(key, 'color', e.target.value)}
+                  onChange={(e) =>
+                    handleStyleChange(key, "color", e.target.value)
+                  }
                   className="w-full h-8"
                 />
                 <div className="flex gap-4 mt-3">
@@ -328,7 +357,9 @@ const Upload = () => {
                     <input
                       type="checkbox"
                       checked={val.style.bold}
-                      onChange={(e) => handleStyleChange(key, 'bold', e.target.checked)}
+                      onChange={(e) =>
+                        handleStyleChange(key, "bold", e.target.checked)
+                      }
                     />
                     <span>Bold</span>
                   </label>
@@ -336,7 +367,9 @@ const Upload = () => {
                     <input
                       type="checkbox"
                       checked={val.style.italic}
-                      onChange={(e) => handleStyleChange(key, 'italic', e.target.checked)}
+                      onChange={(e) =>
+                        handleStyleChange(key, "italic", e.target.checked)
+                      }
                     />
                     <span>Italic</span>
                   </label>
@@ -350,14 +383,16 @@ const Upload = () => {
             type="submit"
             disabled={loading}
             className={`mt-8 w-full py-3 text-white font-semibold rounded-md ${
-              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
             }`}
           >
-            {loading ? 'Uploading...' : 'Upload Poster'}
+            {loading ? "Uploading..." : "Upload Poster"}
           </button>
         </form>
 
-        <canvas ref={canvasRef} style={{ display: 'none' }} />
+        <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
     </div>
   );
