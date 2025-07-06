@@ -37,8 +37,8 @@ cron.schedule("* * * * *", async () => {
     const phoneNumber = customer.whatsapp;
 
     // ✅ FIX: Construct the real media URL
-    // const mediaUrl = `https://poster-generetorapp-backend.onrender.com/api/uploads/posters/${schedule.posterId}.jpg`;
-    const mediaUrl = `https://images.unsplash.com/photo-1749739112076-91417cf773b8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8`
+    const mediaUrl = `https://post-generate-app.onrender.com/api/uploads/posters/${schedule.posterId}.jpg`;
+    // const mediaUrl = `https://images.unsplash.com/photo-1749739112076-91417cf773b8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8`
     await sendWhatsApp(phoneNumber, mediaUrl);
 
     schedule.status = "Sent";
