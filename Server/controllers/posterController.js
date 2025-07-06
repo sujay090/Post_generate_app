@@ -192,7 +192,7 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
 
         generatedPosters.push({
           _id: saved._id,
-          imageUrl: `/uploads/generated/${fileName}`,
+          imageUrl: `https://post-generate-app.onrender.com/uploads/generated/${fileName}`,
         });
       } catch (innerErr) {
         console.error(
