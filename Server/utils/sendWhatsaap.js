@@ -21,6 +21,7 @@ export default async function sendWhatsApp(to, imageUrl) {
     return message;
   } catch (error) {
     console.error('❌ Twilio send failed:', error.message);
+    console.log("max ff")
     throw error;
   }
 }
