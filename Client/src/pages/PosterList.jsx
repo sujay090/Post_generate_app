@@ -10,7 +10,7 @@ const PosterList = () => {
   const [customers, setCustomers] = useState([]);
   const categories = ["Offers", "Events", "Festivals"];
 
-  const baseUrl = "http://localhost:5000/api";
+  const baseUrl = "https://post-generate-app.onrender.com/api";
 
   useEffect(() => {
     const fetchCustomers = async () => {

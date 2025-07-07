@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base API URL from environment variable or fallback
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+const API_URL ="https://post-generate-app.onrender.com/api"
 // "https://poster-generetorapp-backend.onrender.com/api";
 // Create Axios instance
 const api = axios.create({

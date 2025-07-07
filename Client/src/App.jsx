@@ -21,6 +21,8 @@ import SidebarLayout from './components/SidebarLayout';
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
+
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center p-5">
