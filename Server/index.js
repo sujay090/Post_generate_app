@@ -22,7 +22,11 @@ const __dirname = path.dirname(__filename);
 
 app.use(
   cors({
-    origin:"*",
+    origin: [
+      "http://localhost:3000",
+      "https://poster-generetorapp-frontend.onrender.com",
+      "https://post-generate-app-1.onrender.com"
+    ],
     credentials: true,
   })
 );
