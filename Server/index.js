@@ -25,7 +25,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://poster-generetorapp-frontend.onrender.com",
-      "https://post-generate-app.onrender.com/api"
+      "https://post-generate-app-1.onrender.com/api"
     ],
     credentials: true,
   })
