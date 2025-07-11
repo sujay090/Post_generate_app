@@ -1,7 +1,9 @@
 import axios from "axios";
 
 // Base API URL from environment variable or fallback
-const API_URL ="https://post-generate-app.onrender.com/api"
+const API_URL ="https://marketing.gs3solution.us/api" 
+// "https://69.62.76.142:5000/api"
+//  "https://post-generate-app.onrender.com/api"
 // "https://poster-generetorapp-backend.onrender.com/api";
 // Create Axios instance
 const api = axios.create({

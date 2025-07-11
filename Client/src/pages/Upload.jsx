@@ -1,3 +1,4 @@
+// Upload.js
 import React, { useRef, useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { toast } from "react-toastify";
@@ -16,7 +17,7 @@ const Upload = () => {
   const [posterFile, setPosterFile] = useState(null);
   const [posterSrc, setPosterSrc] = useState("");
   const [imgSize, setImgSize] = useState({ width: 400, height: 560 });
-  const [originalSize, setOriginalSize] = useState({ width: 0, height: 0 }); // ✅ Track real image size
+  const [originalSize, setOriginalSize] = useState({ width: 0, height: 0 });
   const [loading, setLoading] = useState(false);
 
   const [elements, setElements] = useState({
@@ -69,7 +70,7 @@ const Upload = () => {
           const height = maxWidth / ratio;
 
           setImgSize({ width, height });
-          setOriginalSize({ width: img.width, height: img.height }); // ✅ Set original image size
+          setOriginalSize({ width: img.width, height: img.height });
           setPosterSrc(event.target.result);
         };
         img.src = event.target.result;
@@ -164,7 +165,6 @@ const Upload = () => {
       formData.append("posters", posterFile);
       formData.append("category", category);
 
-      // ✅ Handle scale based on original vs preview
       const xRatio =
         originalSize.width && imgSize.width
           ? originalSize.width / imgSize.width
@@ -183,7 +183,7 @@ const Upload = () => {
         style: {
           fontSize: `${val.style.fontSize}px`,
           fontWeight: val.style.bold ? "bold" : "normal",
-          fontStyle: val.style.italic ? "italic" : "normal", // ✅ Include this
+          fontStyle: val.style.italic ? "italic" : "normal",
           color: val.style.color,
           fontFamily: val.style.fontFamily,
         },
@@ -352,6 +352,27 @@ const Upload = () => {
                   }
                   className="w-full h-8"
                 />
+
+                {/* ✅ NEW: Font Family */}
+                <label className="block mt-2 text-sm font-medium mb-1">
+                  Font Family
+                </label>
+                <select
+                  value={val.style.fontFamily}
+                  onChange={(e) =>
+                    handleStyleChange(key, "fontFamily", e.target.value)
+                  }
+                  className="w-full px-2 py-1 border border-gray-300 rounded"
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Courier New">Courier New</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Tahoma">Tahoma</option>
+                  <option value="Helvetica">Helvetica</option>
+                </select>
+
                 <div className="flex gap-4 mt-3">
                   <label className="flex items-center space-x-1">
                     <input

@@ -86,7 +86,7 @@ const ScheduleList = () => {
               />
             </svg>
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900">Poster Schedules</h1>
+          <h1 className="text-[10px] font-semibold text-gray-900">Poster Schedules</h1>
         </div>
 
         {/* Filters */}
@@ -172,7 +172,7 @@ const ScheduleList = () => {
                   <tr key={schedule._id}>
                     <td className="px-4 py-2">{schedule.customerId?.companyName || 'N/A'}</td>
                     <td className="px-4 py-2">{schedule.category}</td>
-                    <td className="px-4 py-2">{schedule.date}</td>
+                    <td className="px-4 py-2">{schedule.date.toLocaleString()}</td>
                     <td className="px-4 py-2">{schedule.posterId?.title || 'N/A'}</td>
                     <td className="px-4 py-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusClass(status)}`}>

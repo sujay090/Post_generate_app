@@ -27,7 +27,7 @@ const Schedule = () => {
   const [selectCustomer, setselectCustomer] = useState("");
   const categories = ["Offers", "Events", "Festivals"];
   // const baseUrl = "https://poster-generetorapp-backend.onrender.com/";
-  const baseUrl="http://localhost:5000/api"
+  const baseUrl="https://marketing.gs3solution.us/api"
 
   useEffect(() => {
     const fetchCustomers = async () => {

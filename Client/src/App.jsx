@@ -1,27 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Customer from './pages/Customer';
-import Upload from './pages/Upload';
-import Schedule from './pages/Schedule';
-import PosterList from './pages/PosterList';
-import CustomerList from './components/CustomerList';
-import ScheduleList from './pages/ScheduleList';
-import Profile from './pages/Profile';
-import SidebarLayout from './components/SidebarLayout';
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Customer from "./pages/Customer";
+import Upload from "./pages/Upload";
+import Schedule from "./pages/Schedule";
+import PosterList from "./pages/PosterList";
+import CustomerList from "./components/CustomerList";
+import ScheduleList from "./pages/ScheduleList";
+import Profile from "./pages/Profile";
+import SidebarLayout from "./components/SidebarLayout";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-
-
 
   if (loading) {
     return (
@@ -57,7 +60,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/posterList"
             element={
               <ProtectedRoute>
@@ -66,7 +69,7 @@ const App = () => {
                 </SidebarLayout>
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route
             path="/customers"
             element={

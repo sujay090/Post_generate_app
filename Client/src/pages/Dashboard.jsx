@@ -65,7 +65,7 @@ const Dashboard = () => {
                 {getIconForMetric(key)}
                 <div>
                   <h6 className="text-lg font-semibold text-primary capitalize">
-                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                    {key.replace(/([A-Z])/g, ' $1').trim()} 
                   </h6>
                   <p className="text-sm text-secondary/80">Current Status</p>
                 </div>

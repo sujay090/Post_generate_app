@@ -140,7 +140,7 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
           "{email}": customer.email || "",
           "{phone}": customer.phone || "",
         };
-
+        
         // Build SVG overlay
         const svgOverlay = `
           <svg width="${imageMeta.width}" height="${
@@ -149,7 +149,7 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
             ${poster.placeholders
               .map((ph) => {
                 let text = ph.text || "";
-                console.log(ph)
+                console.log(ph);
                 // 👇 Normalize and replace placeholder
                 const lowerText = text.toLowerCase();
                 if (placeholderMap[lowerText]) {
@@ -162,7 +162,7 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
                 const color = style.color || "#000000";
                 const fontWeight = style.fontWeight || "normal";
                 const fontStyle = style.fontStyle || "normal";
-                console.log(style)
+                console.log(style);
                 const safeText = String(text)
                   .replace(/&/g, "&amp;")
                   .replace(/</g, "&lt;")
@@ -192,7 +192,7 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
 
         generatedPosters.push({
           _id: saved._id,
-          imageUrl: `https://post-generate-app.onrender.com/uploads/generated/${fileName}`,
+          imageUrl: `https://marketing.gs3solution.us/uploads/generated/${fileName}`,
         });
       } catch (innerErr) {
         console.error(

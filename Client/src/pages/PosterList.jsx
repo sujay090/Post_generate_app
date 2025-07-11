@@ -10,7 +10,7 @@ const PosterList = () => {
   const [customers, setCustomers] = useState([]);
   const categories = ["Offers", "Events", "Festivals"];
 
-  const baseUrl = "https://post-generate-app.onrender.com/api";
+  const baseUrl = "https://marketing.gs3solution.us/api";
 
   useEffect(() => {
     const fetchCustomers = async () => {
