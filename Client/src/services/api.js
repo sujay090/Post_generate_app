@@ -63,6 +63,8 @@ export const customerAPI = {
 
   getCustomers: () => api.get("/customers/"),
 
+  getCustomer: (id) => api.get(`/customers/${id}`),
+
   update: (id, formData) =>
     api.put(`/customers/edit/${id}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },

@@ -176,7 +176,7 @@ const ScheduleList = () => {
                     <td className="px-4 py-2">{schedule.posterId?.title || 'N/A'}</td>
                     <td className="px-4 py-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusClass(status)}`}>
-                        {status}
+                        {schedule.status}
                       </span>
                     </td>
                     <td className="px-4 py-2 text-right">

@@ -34,7 +34,6 @@ const Schedule = () => {
       try {
         const res = await customerAPI.getCustomers();
         setCustomers(res.data || []);
-        console.log(res.data);
       } catch (error) {
         toast.error("Failed to fetch customers", { autoClose: 3000 });
       }
@@ -210,7 +209,6 @@ const Schedule = () => {
       setLoading(false);
     }
   };
-  console.log("FROM DATA", formData);
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="flex items-center justify-between mb-8">

@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Customer from "./pages/Customer";
+import EditCustomer from "./pages/EditCustomer";
 import Upload from "./pages/Upload";
 import Schedule from "./pages/Schedule";
 import PosterList from "./pages/PosterList";
@@ -86,6 +87,16 @@ const App = () => {
               <ProtectedRoute>
                 <SidebarLayout>
                   <CustomerList />
+                </SidebarLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customers/edit/:id"
+            element={
+              <ProtectedRoute>
+                <SidebarLayout>
+                  <EditCustomer />
                 </SidebarLayout>
               </ProtectedRoute>
             }
