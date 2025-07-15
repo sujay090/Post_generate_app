@@ -1,5 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -12,7 +13,6 @@ import customerRoutes from "./routes/customerRoutes.js";
 import posterRoutes from "./routes/posterRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import scheduleRoutes from "./routes/scheduleRoutes.js";
-dotenv.config();
 import "./controllers/cronJobs.js"
 connectDB();
 

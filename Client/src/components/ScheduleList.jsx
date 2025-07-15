@@ -27,6 +27,7 @@ const ScheduleList = () => {
       setLoading(false);
     }
   };
+  console.log(schedules)
 
   const handleSort = (key) => {
     let direction = 'asc';

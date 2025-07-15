@@ -1,27 +1,28 @@
-import twilio from 'twilio';
+import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
 
 export default async function sendWhatsApp(to, imageUrl) {
   try {
-    const fullNumber = `whatsapp:${to.startsWith('+') ? to : `+91${to}`}`;
-    const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
+    const number = to.startsWith('+91') ? to : `91${to}`;
+    const message = 'Testing send message through API';
+    const token = process.env.MSGWAPI_TOKEN; // Put token in .env
 
-    console.log(`📤 Sending WhatsApp to ${fullNumber}`);
-    console.log(`🖼️ Image URL: ${imageUrl}`);
+    const url = `https://www.msgwapi.com/api/whatsapp/send?receiver=${number}&msgtext=${encodeURIComponent(message)}&token=${token}&mediaurl=${encodeURIComponent(imageUrl)}`;
+// &mediaurl=${encodeURIComponent(imageUrl)}
+    console.log('📤 Sending WhatsApp via msgwapi.com');
+    console.log('➡️ URL:', url);
 
-    const message = await client.messages.create({
-      from: 'whatsapp:+14155238886',
-      to: fullNumber,
-      body: 'Here....',
-      mediaUrl: [imageUrl],
-    });
+    const res = await axios.get(url);
+    console.log('✅ Response:', res.data);
 
-    console.log('✅ Twilio message SID:', message.sid);
-    return message;
+    if (!res.data.success) {
+      throw new Error(res.data.message || 'Unknown error');
+    }
+
+    return res.data;
   } catch (error) {
-    console.error('❌ Twilio send failed:', error.message);
-    console.log("max ff")
+    console.error('❌ Failed to send via msgwapi:', error.message);
     throw error;
   }
 }

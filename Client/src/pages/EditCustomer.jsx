@@ -111,20 +111,20 @@ const EditCustomer = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading customer details...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
+          <p className="mt-4 text-gray-300">Loading customer details...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-8">
+        <div className="bg-gradient-to-br from-slate-800/90 via-blue-900/50 to-slate-700/90 backdrop-blur-sm border border-blue-500/30 rounded-2xl shadow-2xl p-8 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-4 text-white shadow-lg">
@@ -144,13 +144,13 @@ const EditCustomer = () => {
                 </svg>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Edit Customer</h1>
-                <p className="text-gray-600">Update customer information</p>
+                <h1 className="text-3xl font-bold text-white">Edit Customer</h1>
+                <p className="text-gray-300">Update customer information</p>
               </div>
             </div>
             <button
               onClick={() => navigate('/customers-list')}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
             >
               ← Back to Customers
             </button>
@@ -158,12 +158,12 @@ const EditCustomer = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <div className="bg-gradient-to-br from-slate-800/90 via-blue-900/50 to-slate-700/90 backdrop-blur-sm border border-blue-500/30 rounded-2xl shadow-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Company Name */}
               <div>
-                <label htmlFor="companyName" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="companyName" className="block text-sm font-semibold text-gray-200 mb-2">
                   Company Name *
                 </label>
                 <input
@@ -172,7 +172,7 @@ const EditCustomer = () => {
                   name="companyName"
                   value={formData.companyName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                   placeholder="Enter company name"
                   required
                 />
@@ -180,7 +180,7 @@ const EditCustomer = () => {
 
               {/* Contact Person */}
               <div>
-                <label htmlFor="contactPerson" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="contactPerson" className="block text-sm font-semibold text-gray-200 mb-2">
                   Contact Person
                 </label>
                 <input
@@ -189,14 +189,14 @@ const EditCustomer = () => {
                   name="contactPerson"
                   value={formData.contactPerson}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                   placeholder="Enter contact person name"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-200 mb-2">
                   Email Address
                 </label>
                 <input
@@ -205,14 +205,14 @@ const EditCustomer = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                   placeholder="Enter email address"
                 />
               </div>
 
               {/* WhatsApp */}
               <div>
-                <label htmlFor="whatsapp" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="whatsapp" className="block text-sm font-semibold text-gray-200 mb-2">
                   WhatsApp Number *
                 </label>
                 <input
@@ -221,7 +221,7 @@ const EditCustomer = () => {
                   name="whatsapp"
                   value={formData.whatsapp}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                   placeholder="Enter 10-digit WhatsApp number"
                   pattern="[0-9]{10}"
                   required
@@ -230,7 +230,7 @@ const EditCustomer = () => {
 
               {/* Website */}
               <div>
-                <label htmlFor="website" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="website" className="block text-sm font-semibold text-gray-200 mb-2">
                   Website URL
                 </label>
                 <input
@@ -239,14 +239,14 @@ const EditCustomer = () => {
                   name="website"
                   value={formData.website}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                   placeholder="https://example.com"
                 />
               </div>
 
               {/* Logo Upload */}
               <div>
-                <label htmlFor="logo" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="logo" className="block text-sm font-semibold text-gray-200 mb-2">
                   Company Logo
                 </label>
                 <input
@@ -255,15 +255,15 @@ const EditCustomer = () => {
                   name="logo"
                   onChange={handleFileChange}
                   accept="image/*"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-blue-400/30 text-white placeholder-gray-400 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-200"
                 />
                 {currentLogo && (
                   <div className="mt-3">
-                    <p className="text-sm text-gray-600 mb-2">Current logo:</p>
+                    <p className="text-sm text-gray-300 mb-2">Current logo:</p>
                     <img
                       src={currentLogo}
                       alt="Current logo"
-                      className="h-16 w-16 object-cover rounded-lg border border-gray-200"
+                      className="h-16 w-16 object-cover rounded-lg border border-blue-400/30"
                     />
                   </div>
                 )}
@@ -271,11 +271,11 @@ const EditCustomer = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div className="flex items-center justify-end space-x-4 pt-6 border-t border-blue-400/30">
               <button
                 type="button"
                 onClick={() => navigate('/customers-list')}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
+                className="px-6 py-3 border border-blue-400/30 text-gray-300 rounded-xl hover:bg-slate-700/50 transition-all duration-200"
               >
                 Cancel
               </button>

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // Base API URL from environment variable or fallback
-const API_URL ="https://marketing.gs3solution.us/api" 
+const API_URL = "http://localhost:5000/api" 
+// "https://marketing.gs3solution.us"
 // "https://69.62.76.142:5000/api"
 //  "https://post-generate-app.onrender.com/api"
 // "https://poster-generetorapp-backend.onrender.com/api";
@@ -35,7 +36,8 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ===================== 🖼 Poster APIs =====================
+// ===================== Poster APIs =====================
+
 export const posterAPI = {
   uploadPoster: (formData) =>
     api.post("/posters/upload", formData, {
@@ -46,7 +48,7 @@ export const posterAPI = {
     api.post("/posters/generate", { category, customerId }),
 };
 
-// ===================== 🔐 Auth APIs =====================
+// ===================== Auth APIs =====================
 export const authAPI = {
   register: (data) => api.post("/auth/register", data),
   login: (data) => api.post("/auth/login", data),
