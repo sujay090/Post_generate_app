@@ -37,8 +37,8 @@ cron.schedule("* * * * *", async () => {
     const phoneNumber = customer.whatsapp;
 
     // ✅ FIX: Construct the real media URL
-    const mediaUrl = `https://marketing.gs3solution.us/api/uploads/posters/${schedule.posterId}.jpg`;
-    // const mediaUrl = `https://www.msgwapi.com/users/1/avatar.png`
+    // const mediaUrl = `https://marketing.gs3solution.us/api/uploads/posters/${schedule.posterId}.jpg`;
+    const mediaUrl = `https://www.msgwapi.com/users/1/avatar.png`
     await sendWhatsApp(phoneNumber, mediaUrl);
 
     schedule.status = "Sent";

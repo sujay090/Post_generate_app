@@ -30,7 +30,6 @@ const ScheduleList = () => {
     if (date === today) return 'Live';
     return date > today ? 'Upcoming' : 'Expired';
   };
-
   const getStatusClass = (status) => {
     switch (status) {
       case 'Live':
