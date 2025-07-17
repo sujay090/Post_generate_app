@@ -2,7 +2,7 @@ import Customer from "../models/Customer.js";
 import fs from "fs";
 import path from "path";
 
-const serverURL = process.env.SERVER_URL || "http://localhost:5000";
+const serverURL = process.env.SERVER_URL || "https://marketing.gs3solution.us";
 
 export const addCustomer = async (req, res) => {
   try {

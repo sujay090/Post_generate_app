@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { scheduleAPI } from '../services/api';
 import { toast } from 'react-toastify';
+import { formatDateTimeIST } from '../utils/timezone';
 
 const ScheduleList = () => {
   const [schedules, setSchedules] = useState([]);
@@ -160,7 +161,17 @@ const ScheduleList = () => {
                 <tbody>
                   {currentItems.map((schedule) => (
                     <tr key={schedule._id}>
-                      <td>{new Date(schedule.date).toLocaleDateString()}</td>
+                      <td>
+                        {(() => {
+                          const { dateStr, timeStr } = formatDateTimeIST(schedule.date);
+                          return (
+                            <div>
+                              <div className="fw-semibold">{dateStr}</div>
+                              <small className="text-muted">{timeStr} IST</small>
+                            </div>
+                          );
+                        })()}
+                      </td>
                       <td>{schedule.customer.companyName}</td>
                       <td>{schedule.category}</td>
                       <td>{schedule.posters.length}</td>

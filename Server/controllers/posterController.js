@@ -162,7 +162,6 @@ export const generatePostersForCustomerByCategory = async (req, res) => {
                 const color = style.color || "#000000";
                 const fontWeight = style.fontWeight || "normal";
                 const fontStyle = style.fontStyle || "normal";
-                console.log(style);
                 const safeText = String(text)
                   .replace(/&/g, "&amp;")
                   .replace(/</g, "&lt;")

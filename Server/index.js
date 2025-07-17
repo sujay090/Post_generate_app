@@ -8,13 +8,20 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// Initialize timezone configuration first
+import { logTimezoneInfo } from "./config/timezone.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import posterRoutes from "./routes/posterRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import scheduleRoutes from "./routes/scheduleRoutes.js";
-import "./controllers/cronJobs.js"
+import timezoneRoutes from "./routes/timezoneRoutes.js";
+import "./controllers/cronJobs.js";
+
+// Initialize database and timezone
 connectDB();
+logTimezoneInfo();
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -44,6 +51,7 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/posters", posterRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/schedules", scheduleRoutes);
+app.use("/api/timezone", timezoneRoutes);
 // new the cron job
 
 const PORT = process.env.PORT || 5000;

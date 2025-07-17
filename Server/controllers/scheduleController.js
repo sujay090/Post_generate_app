@@ -2,6 +2,8 @@ import Schedule from "../models/Schedule.js";
 import nodeSchedule from "node-schedule";
 import axios from "axios";
 import dotenv from "dotenv";
+import moment from "moment-timezone";
+import { DEFAULT_TIMEZONE, convertToIST, formatForIST } from "../config/timezone.js";
 
 dotenv.config();
 const postSchedule = (
@@ -58,12 +60,30 @@ export const createSchedule = async (req, res) => {
 
       categories.forEach((category) => {
         dates.forEach((date) => {
-          const parseDate = new Date(date)
+          // ✅ Proper timezone handling for IST
+          let parseDate;
+          
+          if (typeof date === 'string') {
+            // If date comes as ISO string from frontend
+            parseDate = new Date(date);
+          } else {
+            // If date comes as moment object or other format
+            parseDate = moment.tz(date, DEFAULT_TIMEZONE).toDate();
+          }
+          
+          // Ensure we have a valid date
+          if (isNaN(parseDate.getTime())) {
+            throw new Error(`Invalid date format: ${date}`);
+          }
+
+          // Log the date conversion for debugging
+          console.log(`Original date: ${date}, Parsed date UTC: ${parseDate.toISOString()}, IST: ${formatForIST(parseDate)}`);
+
           entries.push({
             customerId,
             posterId,
             category,
-            date:parseDate,
+            date: parseDate, // Store as UTC in database
           });
           
 
@@ -106,9 +126,18 @@ export const getAllSchedules = async (req, res) => {
       .populate("customerId", "companyName") // ✅ Fetch customer name
       .populate("posterId", "title"); // Optional: fetch poster title
 
+    // ✅ Add timezone information to response for frontend debugging
+    const schedulesWithTimezone = schedules.map(schedule => ({
+      ...schedule.toObject(),
+      dateIST: formatForIST(schedule.date),
+      dateUTC: schedule.date.toISOString()
+    }));
+
     console.log("All scheduled jobs:");
     console.log(Object.keys(nodeSchedule.scheduledJobs));
-    res.json(schedules);
+    console.log(`Returning ${schedulesWithTimezone.length} schedules with timezone info`);
+    
+    res.json(schedulesWithTimezone);
   } catch (error) {
     res.status(500).json({ message: "Error fetching schedules", error });
   }
